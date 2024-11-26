@@ -22,21 +22,26 @@ export type CustomFormGroup = FormGroup<ItemForm>;
   selector: 'app-root',
   imports: [ReactiveFormsModule, FormChildComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  // Injecting NonNullableFormBuilder service
   fb = inject(NonNullableFormBuilder);
 
+  // Initializing the form with an array of custom form groups
   form: FormGroup<{ items: FormArray<CustomFormGroup> }> = this.fb.group({
     items: this.fb.array<CustomFormGroup>([]),
   });
 
+  // Getter for the items form array
   get items() {
     return this.form.controls.items;
   }
 
+  // Converting form value changes to a signal
   itemChanges = toSignal(this.form.valueChanges);
 
+  // Computed property to calculate the total value of all items
   totalValue = computed(() => {
     const value = this.itemChanges()?.items?.reduce(
       (total, item) => total + (Number(item?.value) || 0),
@@ -46,6 +51,7 @@ export class AppComponent {
     return value;
   });
 
+  // Method to add a new item to the form array
   addItem() {
     const id = this.items.length + 1;
     const itemForm = this.fb.group<ItemForm>({

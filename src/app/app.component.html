@@ -1,6 +1,6 @@
 <div>
   @let items = form.controls.items.controls;
-  <button (click)="addItem()">Agregar Item</button>
+  <button (click)="addItem()">Add Item</button>
 
   @for (formGroup of items; track formGroup.controls.id.value) {
     <app-form-child [formGroup]="formGroup" />
